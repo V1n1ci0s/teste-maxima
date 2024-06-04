@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
+import pydeck as pdk
 
 # Configurações iniciais
 sns.set_style("dark")
@@ -171,3 +173,33 @@ ax.set_ylabel('Média de suicídio / 100k habitantes', fontsize=13)
 ax.set_xlabel('Anos', fontsize=13)
 sns.lineplot(x=anos, y=suicidio_brasil_media, color='green', ax=ax)
 st.pyplot(fig)
+
+# Mapa mundial interativo com Plotly
+st.header("Mapa Mundial de Taxas de Suicídio")
+df_world = df.groupby(['year', 'country'])['suicides/100k pop'].mean().reset_index()
+year_selected = st.slider("Selecione o Ano", min_value=int(df_world['year'].min()), max_value=int(df_world['year'].max()), value=int(df_world['year'].min()))
+
+df_year = df_world[df_world['year'] == year_selected]
+
+fig = px.choropleth(df_year, locations="country", locationmode='country names', color="suicides/100k pop", hover_name="country", projection="natural earth", title="Taxa de Suicídio por 100k habitantes")
+st.plotly_chart(fig)
+
+# Adicionando interatividade com Plotly
+st.header("Gráficos Interativos")
+option = st.selectbox('Selecione o Gráfico', ('Tendência de Suicídios por Sexo', 'Suicídios por Faixa Etária', 'Suicídios por Geração', 'Suicídios por Gênero'))
+
+if option == 'Tendência de Suicídios por Sexo':
+    fig = px.line(df_trend, labels={'value': 'Taxa de Suicídio por 100k habitantes', 'year': 'Ano'}, title="Tendência das Taxas de Suicídio por Sexo ao Longo do Tempo")
+    st.plotly_chart(fig)
+
+elif option == 'Suicídios por Faixa Etária':
+    fig = px.bar(tabela.reset_index(), x='year', y=tabela.columns, barmode='stack', title="Suicídios por Faixa Etária no Brasil")
+    st.plotly_chart(fig)
+
+elif option == 'Suicídios por Geração':
+    fig = px.histogram(df_brasil, x='generation', title="Suicídios por Geração no Brasil")
+    st.plotly_chart(fig)
+
+elif option == 'Suicídios por Gênero':
+    fig = px.pie(df_brasil, names='sex', values='suicides_no', title="Número de Suicídios por Gênero no Brasil")
+    st.plotly_chart(fig)
