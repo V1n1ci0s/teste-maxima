@@ -1,3 +1,12 @@
+pip install streamlit==1.10.0
+pip install pandas==1.3.3
+pip install numpy==1.22.4
+pip install matplotlib==3.4.3
+pip install seaborn==0.11.2
+pip install plotly==5.3.1
+pip install pydeck==0.7.1
+
+
 import streamlit as st
 import pandas as pd
 import numpy as np
