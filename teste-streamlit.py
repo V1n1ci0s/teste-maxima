@@ -126,9 +126,9 @@ homens = df.groupby(['sex', 'age'])['suicides_no'].sum()[6:]
 fig, ax = plt.subplots(figsize=(10, 5))
 sns.barplot(x=[x.split(' ')[0] for x in mulheres.index.get_level_values(1)], y=mulheres.values, ax=ax)
 ax.set_title('Faixa etária (mulheres)', fontsize=19)
-st.pyplot(fig, ax = plt.subplots(figsize=(10, 5))
-sns.barplot(x=[x.split(' ')[0] for x in homens.index.get_level_values(1)], y=homens.values, ax=ax)
-ax.set_title('Faixa etária (homens)', fontsize=19)
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.barplot(x=[x.split(' ')[0] for x in mulheres.index.get_level_values(1)], y=mulheres.values, ax=ax)
+ax.set_title('Faixa etária (mulheres)', fontsize=19)
 st.pyplot(fig)
 
 # Total de homens e mulheres
